@@ -31,6 +31,7 @@ aws s3 mb s3://lambda-cloudfront-log-ingester --region eu-west-1
 ```
 ###Elasticsearch
 Permissions policy should allow calls from the lamda role, however in my case I have this open to the domain.
+You will need to get your ES endpoint URL
 
 ##Local setup
 ```
@@ -41,45 +42,25 @@ pip install virtualenv boto3
  git clone https://github.com/dbnegative/lambda-cloudfront-log-ingester
  cd lambda-cloudfront-log-ingester
 ```
+* edit the config/deployment-config.json if needed. 
+```
+{
+"S3_CONFIG_BUCKET":"lambda-cloudfront-log-ingester-config",
+"LAMBDA_DEPLOY_BUCKET": "lambda-cloudfront-log-ingester",
+"CONFIG_FILE":"config/config.json",
+"LAMBDA_FUNC_NAME" :"cloudfront-log-ingester"
+}
+```
 * setup the build enviroment
 ```
 deploy-wrapper.py setup
 ```
-* amend the config.json with your own settings
+* edit the config/config.json with your own settings, at the minimum the following:
 ```
-{
     "es_host": "YOUR AWS ES ENDPOINT ",
     "es_region": "eu-west-1",
-    "es_connection_timeout": 60,
-    "es_bulk_timeout": "60s",
-    "es_bulk_chunk_size": 1000, 
     "sts_role_arn": "YOUR LAMBDA ROLE ARN",
     "sts_session_name": "lambdastsassume",
-    "es_mapping": {
-        "mappings": {
-            "logs": {
-                "properties": {
-                    "host-header": {
-                        "type": "string",
-                        "index": "not_analyzed"
-                    },
-                    "ip": {
-                        "type": "string",
-                        "index": "not_analyzed"
-                    },
-                    "host": {
-                        "type": "string",
-                        "index": "not_analyzed"
-                    },
-                    "uri-stem": {
-                        "type": "string",
-                        "index": "not_analyzed"
-                    }
-                }
-            }
-        }
-    }
-}
 ```
 #Deploy-wrapper.py usage
 ```

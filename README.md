@@ -3,23 +3,19 @@
 Lambda function to ingest and push CloudFront logs that have been placed on S3.
 
 ##Prerequisites
-
-Access to:
-* AWS S3 
-* AWS Elasticsearch cluster
-* AWS Lambda
-* AWS IAM
-
+* Admin Acess to: AWS S3, Elasticsearch, Lambda, IAM
 * python 2.7+
 * boto3
 * virtualenv
 
 ##AWS Setup
 
+
+
+##Local setup
 ```
 pip install virtualenv boto3
 ```
-##Local setup
 * clone the repo
 ```
  git clone https://github.com/dbnegative/lambda-cloudfront-log-ingester

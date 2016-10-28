@@ -79,6 +79,42 @@ def upate_config(env, lambda_config_file, config):
                       lambda_config_file)
 
 
+def create_lamda_function(function_name, role_arn, handler, bucket, key,timeout, memory_size, description=''):
+    '''
+    create a lambda function
+    returns the entire response as a JSON string
+
+    args:
+    function_name - (string) name of the lambda function to create
+    role_arn - (string) the role for lambda function to assume
+    handler - (string) the lamda function within the package to invoke
+    bucket - (string) the s3 bucket where the deployment package resides
+    key - (string) the s3 object key AKA lamda deployment package filename
+    timeout - (string) the timeout value for the lambda function
+    memory_size - (string) the memory size of the lambda function
+
+    opt args:
+    description - description of the function
+    '''
+    aws_lambda = boto3.client('lambda')
+    resp = aws_lambda.create_function(
+        FunctionName=function_name,
+        Runtime='python2.7',
+        Role=role_arn,
+        Handler=handler,
+        Code={
+            'S3Bucket': bucket,
+            'S3Key': key,
+        },
+        Description=description,
+        Timeout=int(timeout),
+        MemorySize=int(memory_size),
+        Publish=True
+    )
+    LOGGER.info("Created Lambda function: " + function_name)
+    return resp
+
+
 def update_lamda_alias(alias, version, function_name, description=''):
     '''
     update lambda alias to specified version
@@ -201,6 +237,8 @@ def main():
     parser_config.add_argument('env',
                                choices=['DEV', 'STAGE', 'PROD'],
                                help='set config for specific enviroment')
+    subparsers.add_parser(
+        'init', help='creates the base lambda function')
 
     subparsers.add_parser(
         'clean', help='clean local build enviroment')
@@ -234,6 +272,20 @@ def main():
     if args.subparsers_name == 'config':
         LOGGER.debug(upate_config(args.env, BASE_DIR +
                                   "/" + config['CONFIG_FILE'], config))
+
+    if args.subparsers_name == 'init':
+        pkg = create_deployment_bundle()
+        publish_s3(pkg, config['LAMBDA_DEPLOY_BUCKET'], pkg.split('/').pop())
+
+        LOGGER.info("Uploaded lambda zip:" + pkg.split('/').pop() +
+                    " to S3://" + config['LAMBDA_DEPLOY_BUCKET'])
+
+        LOGGER.debug(create_lamda_function(config['LAMBDA_FUNC_NAME'],
+                                           config['LAMBDA_ROLE_ARN'], config['LAMBDA_HANDLER'],
+                                           config['LAMBDA_DEPLOY_BUCKET'],
+                                           pkg.split('/').pop(),
+                                           config['LAMBDA_TIMEOUT'],
+                                           config['LAMBDA_MEMORY_SIZE']))
 
     # clean
     if args.subparsers_name == 'clean':

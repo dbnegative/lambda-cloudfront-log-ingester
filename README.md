@@ -6,9 +6,9 @@ Lambda function to ingest and push CloudFront logs that have been placed on S3.
 python 2.7+
 boto3
 virtualenv
-'''
+```
 pip install virtualenv boto3
-'''
+```
 
 
 ##TODO

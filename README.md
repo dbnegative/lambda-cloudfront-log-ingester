@@ -11,6 +11,7 @@ Lambda function to ingest and push CloudFront logs that have been placed on S3.
 * jq
 
 ##AWS Setup
+###IAM
 * create the lambda IAM role
 ```
 aws iam create-role --role-name lambda-cloudfront-log-ingester --assume-role-policy-document="$(cat policies/trust-policy.json|jq -c '.' )"
@@ -19,6 +20,17 @@ aws iam create-role --role-name lambda-cloudfront-log-ingester --assume-role-pol
 ```
 aws iam update-assume-role-policy --policy-document="$(cat policies/trust-policy-mod.json|jq -c '.')" --role-name lambda-cloudfront-log-ingester
 ```
+###S3
+* create the bucket where the lambda function config will be stored
+```
+aws s3 mb s3://lambda-cloudfront-log-ingester-config --region eu-west-1
+```
+* create the bucket where lambda function deployment zip will be stored
+```
+aws s3 mb s3://lambda-cloudfront-log-ingester --region eu-west-1
+```
+###Elasticsearch
+Permissions policy should allow calls from the lamda role, however in my case I have this open to the domain.
 
 ##Local setup
 ```

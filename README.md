@@ -1,9 +1,16 @@
-# cloudfrontlogs2elasticsearch
-Push CloudFront logs to Elasticsearch with Lambda and S3
+#Push CloudFront logs to Elasticsearch with Lambda and S3
 
-## TODO
-* Clean up deployment script
-* add setup script to install python deps
-* add base config file
+Lambda function to ingest and push CloudFront logs that have been placed on S3.
+
+##Prerequisites
+python 2.7+
+boto3
+virtualenv
+'''
+pip install virtualenv boto3
+'''
+
+
+##TODO
 * aws policy files
 * improve instructions aka this file

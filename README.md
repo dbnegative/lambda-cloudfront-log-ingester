@@ -4,13 +4,21 @@ Lambda function to ingest and push CloudFront logs that have been placed on S3.
 
 ##Prerequisites
 * Admin Acess to: AWS S3, Elasticsearch, Lambda, IAM
+* aws cli
 * python 2.7+
 * boto3
 * virtualenv
+* jq
 
 ##AWS Setup
-
-
+* create the lambda IAM role
+```
+aws iam create-role --role-name lambda-cloudfront-log-ingester --assume-role-policy-document="$(cat policies/trust-policy.json|jq -c '.' )"
+```
+* modify the role so that it can assume itself for STS token generation
+```
+aws iam update-assume-role-policy --policy-document="$(cat policies/trust-policy-mod.json|jq -c '.')" --role-name lambda-cloudfront-log-ingester
+```
 
 ##Local setup
 ```

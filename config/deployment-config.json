@@ -1,0 +1,6 @@
+{
+"S3_CONFIG_BUCKET":"lambda-cloudfront-log-ingester-config",
+"LAMBDA_DEPLOY_BUCKET": "lambda-cloudfront-log-ingester",
+"CONFIG_FILE":"config/config.json",
+"LAMBDA_FUNC_NAME" :"cloudfront-log-ingester"
+}

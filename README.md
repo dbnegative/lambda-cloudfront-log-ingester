@@ -29,6 +29,10 @@ aws s3 mb s3://lambda-cloudfront-log-ingester-config --region eu-west-1
 ```
 aws s3 mb s3://lambda-cloudfront-log-ingester --region eu-west-1
 ```
+* Create folders to hold config files for different deployment stages:
+```
+TODO
+```
 ###Elasticsearch
 Permissions policy should allow calls from the lamda role, however in my case I have this open to the domain.
 You will need to get your ES endpoint URL
@@ -48,7 +52,11 @@ pip install virtualenv boto3
 "S3_CONFIG_BUCKET":"lambda-cloudfront-log-ingester-config",
 "LAMBDA_DEPLOY_BUCKET": "lambda-cloudfront-log-ingester",
 "CONFIG_FILE":"config/config.json",
-"LAMBDA_FUNC_NAME" :"cloudfront-log-ingester"
+"LAMBDA_FUNC_NAME" :"cloudfront-log-ingester",
+"LAMBDA_HANDLER":"lamda-cloudfront-log-ingester.lambda_function",
+"LAMBDA_ROLE_ARN":"arn:aws:iam::<YOURAWSACCOUNTID>:role/lambda-cloudfront-log-ingester",
+"LAMBDA_TIMEOUT":"300",
+"LAMBDA_MEMORY_SIZE":"512"
 }
 ```
 * setup the build enviroment
@@ -62,6 +70,10 @@ deploy-wrapper.py setup
     "sts_role_arn": "YOUR LAMBDA ROLE ARN",
     "sts_session_name": "lambdastsassume",
 ```
+* create the initial version of the function using the deploy-wrapper.sh
+```
+deploy-wrapper.py init
+```
 #Deploy-wrapper.py usage
 ```
 Deploy and manipulate lambda function
@@ -73,6 +85,7 @@ positional arguments:
                         enviroment>
     deploy              deploy function to s3
     config              deploy config to s3
+    init                creates the base lambda function
     clean               clean local build enviroment
     setup               create local build enviroment
 

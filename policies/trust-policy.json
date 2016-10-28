@@ -8,14 +8,6 @@
         "Service": "lambda.amazonaws.com"
       },
       "Action": "sts:AssumeRole"
-    },
-    {
-      "Sid": "AllowlambdaToAssumeRole",
-      "Effect": "Allow",
-      "Principal": {
-        "AWS": "arn:aws:iam::<ACCOUNTID>:role/<LAMBDAROLE>"
-      },
-      "Action": "sts:AssumeRole"
     }
   ]
 }

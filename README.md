@@ -10,7 +10,7 @@ Lambda function to ingest and push CloudFront logs that have been placed on S3.
 * virtualenv
 * jq
 
-Setup
+##Setup
 ###IAM
 * create the lambda IAM role
 ```

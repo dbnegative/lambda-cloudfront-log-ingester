@@ -88,9 +88,15 @@ aws lambda create-alias --name STAGE --function-name lambda-cloudfront-log-inges
 aws lambda create-alias --name PROD --function-name lambda-cloudfront-log-ingester --function-version=1
 ```
 * create s3 trigger on PROD alias. You can now deploy and test to DEV and STAGE without affecting your production version
-```
-TODO
-```
+  1. go to the lambda console
+  2. select the lambda-cloudfront-log-ingester fucntion
+  3. press the "Qualifiers" button and select the PROD alias
+  4. select the "Triggers" tab
+  5. add an S3 trigger
+  6. set the bucket to where your cloudfront logs sit
+  7. set the event to "Object Create (All) - Put"
+  8. enable the trigger and save
+
 * deploying a new build to DEV alias
 ```
 deploy-wrapper.py deploy --env DEV

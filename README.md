@@ -1,10 +1,22 @@
-#Push CloudFront logs to Elasticsearch with Lambda and S3 (WIP)
+#Push CloudFront logs to Elasticsearch with Lambda and S3
 
 Lambda function to ingest and push CloudFront logs that have been placed on S3.
 
 ![Alt text](/diagram.png?raw=true "Layout")
 
+##Things to know before starting:
+This function pulls the cloudfront .gz log files from S3 and creates a dict of all log lines. It all also strips the time/date and merge's them into a new timestamp field. The dict is written using the Elasticsearch client via the bulk api. 
 
+New elasticsearch index's are created for each day. PLEASE MAKE SURE YOU HAVE INDEX CLEANING POLICY IN PLACE! 
+I have created a custom index map scheme that works for me. Please change to suite your needs. 
+
+The deploy-wrapper.sh is generic and can be used for other functions. All settings can be changed in the deployment-config.json file in the config folder. 
+
+* I'm not a python expert so pull requests welcome!!
+* AWS Elasticsearch is a pain to connect to. You need to auth all your requests with an AWSAuthRequest
+* My default lambda settings are not finely tuned - however they are working for me - YMMV
+* Always use aliases when working with LAMBDA in prod - trust me...
+ 
 ##Prerequisites
 * Admin Acess to: AWS S3, Elasticsearch, Lambda, IAM
 * aws cli

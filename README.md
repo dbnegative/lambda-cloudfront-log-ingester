@@ -10,7 +10,7 @@ Lambda function to ingest and push CloudFront logs that have been placed on S3.
 * virtualenv
 * jq
 
-##AWS Setup
+Setup
 ###IAM
 * create the lambda IAM role
 ```
@@ -40,7 +40,8 @@ PROD
 Permissions policy should allow calls from the lamda role, however in my case I have this open to the domain.
 You will need to get your ES endpoint URL
 
-##Local Setup
+
+* install needed python dep's
 ```
 pip install virtualenv boto3
 ```
@@ -83,7 +84,18 @@ aws lambda create-alias --name DEV --function-name lambda-cloudfront-log-ingeste
 aws lambda create-alias --name STAGE --function-name lambda-cloudfront-log-ingester --function-version=1
 aws lambda create-alias --name PROD --function-name lambda-cloudfront-log-ingester --function-version=1
 ```
-
+* create s3 trigger on PROD alias. You can now deploy and test to DEV and STAGE without affecting your production version
+```
+TODO
+```
+* deploying a new build to DEV alias
+```
+deploy-wrapper.py deploy --env DEV
+```
+* promoting that version to STAGE alias
+```
+deploy-wrapper.py promote DEV STAGE
+```
 
 #Deploy-wrapper.py usage
 ```

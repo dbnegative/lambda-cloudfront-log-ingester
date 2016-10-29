@@ -35,6 +35,10 @@ aws iam create-role --role-name lambda-cloudfront-log-ingester --assume-role-pol
 ```
 aws iam update-assume-role-policy --policy-document="$(cat policies/trust-policy-mod.json|jq -c '.')" --role-name lambda-cloudfront-log-ingester
 ```
+* Add custom policy to allow access to S3, Elasticsearch, Cloudwatch Logs,
+```
+TODO ;)
+```
 ###S3
 * create the bucket where the lambda function config will be stored
 ```
@@ -138,5 +142,5 @@ optional arguments:
 ```
 
 ##TODO
-* aws policy files
+* aws policy files - S3, ELASTICSEARCH, LOG 
 * improve instructions aka this file

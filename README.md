@@ -2,6 +2,8 @@
 
 Lambda function to ingest and push CloudFront logs that have been placed on S3.
 
+![Alt text](/diagram.png?raw=true "Layout")
+
 
 ##Prerequisites
 * Admin Acess to: AWS S3, Elasticsearch, Lambda, IAM

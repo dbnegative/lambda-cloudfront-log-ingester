@@ -29,15 +29,18 @@ aws s3 mb s3://lambda-cloudfront-log-ingester-config --region eu-west-1
 ```
 aws s3 mb s3://lambda-cloudfront-log-ingester --region eu-west-1
 ```
-* Create folders to hold config files for different deployment stages:
+* Create 4 folders to hold config files for different deployment stages thorugh the AWS S3 console:
 ```
-TODO
+$LATEST
+DEV
+STAGE
+PROD
 ```
 ###Elasticsearch
 Permissions policy should allow calls from the lamda role, however in my case I have this open to the domain.
 You will need to get your ES endpoint URL
 
-##Local setup
+##Local Setup
 ```
 pip install virtualenv boto3
 ```
@@ -74,6 +77,14 @@ deploy-wrapper.py setup
 ```
 deploy-wrapper.py init
 ```
+* create 3 lambda alias for continous deploments and tests 
+```
+aws lambda create-alias --name DEV --function-name lambda-cloudfront-log-ingester --function-version=1
+aws lambda create-alias --name STAGE --function-name lambda-cloudfront-log-ingester --function-version=1
+aws lambda create-alias --name PROD --function-name lambda-cloudfront-log-ingester --function-version=1
+```
+
+
 #Deploy-wrapper.py usage
 ```
 Deploy and manipulate lambda function

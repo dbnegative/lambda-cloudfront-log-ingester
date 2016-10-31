@@ -61,7 +61,7 @@ def publish_s3(filename, bucket, key):
     s3 = boto3.client('s3')
     with open(filename, 'rb') as data:
         s3.upload_fileobj(data, bucket, key)
-    LOGGER.info("Uploaded " + filename + " to S3://" + bucket)
+    LOGGER.info("Uploaded " + filename + " as "+key+ " to S3://" + bucket)
 
 
 def upate_config(env, lambda_config_file, config):
@@ -73,13 +73,17 @@ def upate_config(env, lambda_config_file, config):
     file - (string) the config.json file which contains the lambda
                  config
     '''
+    print ("FILE: " + lambda_config_file +
+           " BUCKET: " + config['S3_CONFIG_BUCKET'] +
+           " KEY: " + env + '/' +
+           config['CONFIG_FILE'])
     return publish_s3(lambda_config_file,
                       config['S3_CONFIG_BUCKET'],
                       env + '/' +
-                      lambda_config_file)
+                      config['CONFIG_FILE'])
 
 
-def create_lamda_function(function_name, role_arn, handler, bucket, key,timeout, memory_size, description=''):
+def create_lamda_function(function_name, role_arn, handler, bucket, key, timeout, memory_size, description=''):
     '''
     create a lambda function
     returns the entire response as a JSON string
@@ -271,7 +275,7 @@ def main():
     # deploy
     if args.subparsers_name == 'config':
         LOGGER.debug(upate_config(args.env, BASE_DIR +
-                                  "/" + config['CONFIG_FILE'], config))
+                                  "/config/" + config['CONFIG_FILE'], config))
 
     if args.subparsers_name == 'init':
         pkg = create_deployment_bundle()
@@ -281,7 +285,8 @@ def main():
                     " to S3://" + config['LAMBDA_DEPLOY_BUCKET'])
 
         LOGGER.debug(create_lamda_function(config['LAMBDA_FUNC_NAME'],
-                                           config['LAMBDA_ROLE_ARN'], config['LAMBDA_HANDLER'],
+                                           config['LAMBDA_ROLE_ARN'], config[
+                                               'LAMBDA_HANDLER'],
                                            config['LAMBDA_DEPLOY_BUCKET'],
                                            pkg.split('/').pop(),
                                            config['LAMBDA_TIMEOUT'],

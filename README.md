@@ -74,9 +74,9 @@ pip install virtualenv boto3
 {
 "S3_CONFIG_BUCKET":"lambda-cloudfront-log-ingester-config",
 "LAMBDA_DEPLOY_BUCKET": "lambda-cloudfront-log-ingester",
-"CONFIG_FILE":"config/config.json",
+"CONFIG_FILE":"config.json",
 "LAMBDA_FUNC_NAME" :"cloudfront-log-ingester",
-"LAMBDA_HANDLER":"lamda-cloudfront-log-ingester.lambda_function",
+"LAMBDA_HANDLER":"lambda_function.lambda_handler",
 "LAMBDA_ROLE_ARN":"arn:aws:iam::<YOURAWSACCOUNTID>:role/lambda-cloudfront-log-ingester",
 "LAMBDA_TIMEOUT":"300",
 "LAMBDA_MEMORY_SIZE":"512"

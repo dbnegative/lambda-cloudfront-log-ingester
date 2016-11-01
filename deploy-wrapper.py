@@ -1,6 +1,6 @@
 #!/usr/local/bin/python
 '''
-Deployment and build script to manage build and deploy lamda functions
+Deployment and build script to manage build and deploy lambda functions
 Author: Jason Witting
 Version: 0.1
 '''

@@ -37,7 +37,10 @@ aws iam update-assume-role-policy --policy-document="$(cat policies/trust-policy
 ```
 * Add custom policy to allow access to S3, Elasticsearch, Cloudwatch Logs,
 ```
-TODO ;)
+You can use the pre-generated AWS policies in the IAM console as follows:
+S3 Readonly Access
+ES full access
+Lambda Basic execution role
 ```
 ###S3
 * create the bucket where the lambda function config will be stored

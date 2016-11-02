@@ -59,7 +59,7 @@ STAGE
 PROD
 ```
 ###Elasticsearch
-Permissions policy should allow calls from the lamda role, however in my case I have this open to the domain.
+Permissions policy should allow calls from the lamda role, however in my case I have this open to my AWS Account ID.
 You will need to get your ES endpoint URL
 
 

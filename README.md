@@ -1,10 +1,10 @@
-#Push CloudFront logs to Elasticsearch with Lambda and S3
+# Push CloudFront logs to Elasticsearch with Lambda and S3
 
 Lambda function to ingest and push CloudFront logs that have been placed on S3.
 
 ![Alt text](/diagram.png?raw=true "Layout")
 
-##Things to know before starting:
+## Things to know before starting:
 This function pulls the cloudfront .gz log files from S3 and creates a dict of all log lines. It all also strips the time/date and merge's them into a new timestamp field. The dict is written using the Elasticsearch client via the bulk api. 
 
 New elasticsearch index's are created for each day. PLEASE MAKE SURE YOU HAVE INDEX CLEANING POLICY IN PLACE! 
@@ -17,7 +17,7 @@ The deploy-wrapper.sh is generic and can be used for other functions. All settin
 * My default lambda settings are not finely tuned - however they are working for me - YMMV
 * Always use aliases when working with LAMBDA in prod - trust me...
  
-##Prerequisites
+## Prerequisites
 * Admin Acess to: AWS S3, Elasticsearch, Lambda, IAM
 * aws cli
 * python 2.7+
@@ -25,8 +25,8 @@ The deploy-wrapper.sh is generic and can be used for other functions. All settin
 * virtualenv
 * jq
 
-##Setup
-###IAM
+## Setup
+### IAM
 * create the lambda IAM role
 ```
 aws iam create-role --role-name lambda-cloudfront-log-ingester --assume-role-policy-document="$(cat policies/trust-policy.json|jq -c '.' )"
@@ -42,7 +42,7 @@ S3 Readonly Access
 ES full access
 Lambda Basic execution role
 ```
-###S3
+### S3
 * create the bucket where the lambda function config will be stored
 ```
 aws s3 mb s3://lambda-cloudfront-log-ingester-config --region eu-west-1
@@ -58,7 +58,7 @@ DEV
 STAGE
 PROD
 ```
-###Elasticsearch
+### Elasticsearch
 Permissions policy should allow calls from the lamda role, however in my case I have this open to my AWS Account ID.
 You will need to get your ES endpoint URL
 
@@ -126,7 +126,7 @@ deploy-wrapper.py deploy --env DEV
 deploy-wrapper.py promote DEV STAGE
 ```
 
-#Deploy-wrapper.py usage
+# Deploy-wrapper.py usage
 ```
 Deploy and manipulate lambda function
 
@@ -145,6 +145,6 @@ optional arguments:
   -h, --help            show this help message and exit
 ```
 
-##TODO
+## TODO
 * aws policy files - S3, ELASTICSEARCH, LOG 
 * improve instructions aka this file
